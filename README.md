@@ -1,57 +1,107 @@
 # Word
 
-Chrome 扩展，输入英文单词，DeepSeek AI 返回音标、释义、例句及科技百科总结。
+Chrome extension that looks up English words via the DeepSeek Chat API. Returns phonetics, definitions, example sentences, and tech summaries for domain terms.
 
 <p align="center">
-  <img src="images/screenshot-popup.png" alt="查词弹窗" width="400" />
-  <img src="images/screenshot-options.png" alt="Skill 配置" width="400" />
+  <img src="images/screenshot-popup.png" alt="Popup lookup" width="400" />
+  <img src="images/screenshot-options.png" alt="Options page" width="400" />
 </p>
 
-## 安装
+## Installation
 
-Chrome → `chrome://extensions` → 开发者模式 → 加载已解压的扩展程序 → 选择项目目录。
+### Step 1: Get the code
 
-## 使用
+**Option A — Download ZIP (recommended)**
 
-1. 点击扩展图标，弹出查词窗口
-2. 选择 Skill 模板（下拉切换，默认「详细查询」）
-3. 输入单词，回车
-4. 点 🔊 朗读发音
+Click the green **Code** button at the top of this repo → **Download ZIP**, then unzip to any folder on your computer.
 
-首次使用需要在选项页（⚙️）配置 [DeepSeek API Key](https://platform.deepseek.com/api_keys)。
+**Option B — Git clone**
 
-## 内置 Skill
+```bash
+git clone https://github.com/1829317945/word.git
+```
 
-| ID | 名称 | 输出 |
-|----|------|------|
-| `detailed` | 详细查询 | 音标 + 释义 + 词条类别 + 技术百科 + 例句（含来源） + 近义词 + 搭配 |
-| `quick` | 快速查询 | 音标 + 中文释义 |
+### Step 2: Load into Chrome
 
-**详细模式**会判定单词类型：普通词汇返回标准词典释义；IT/AI/计算机等科技词汇额外输出 80-150 字的维基百科风格技术总结。例句强制标注真实来源（The New York Times、BBC、TED 等）。
+1. Open Chrome
+2. Go to `chrome://extensions` (or `edge://extensions` for Edge)
+3. Turn on the **"Developer mode"** toggle (top-right corner)
+4. Click **"Load unpacked"** (top-left)
+5. In the file picker, select the `word` folder you extracted in Step 1 — make sure it's the folder containing `manifest.json`, not its parent
+6. Click "Select folder"
 
-选项页支持新建、编辑、删除自定义 Skill。每个 Skill 由 system prompt 模板 + 输出字段定义组成，`{word}` 为单词占位符。
+The Word icon will appear in your extensions list. Click the pin 📌 to keep it visible on the toolbar.
 
-## 项目结构
+### Step 3: Configure API Key
+
+1. Go to [platform.deepseek.com/api_keys](https://platform.deepseek.com/api_keys)
+2. Sign up or log in, then click **"Create API Key"** — copy the key (it starts with `sk-`)
+3. Click the Word extension icon → ⚙️ gear icon → paste the key → click **"Save"**
+4. Click **"Test Connection"** — a green success message means everything is set
+
+> **Cost**: DeepSeek Chat API bills per token. A single lookup costs a fraction of a cent. Casual daily use is effectively free.
+
+### Troubleshooting
+
+<details>
+<summary><b>Extension icon not showing?</b></summary>
+Click the puzzle piece 🧩 on the toolbar, find Word in the list, click the pin 📌.
+</details>
+
+<details>
+<summary><b>"Invalid API Key" when testing?</b></summary>
+Make sure the key is copied in full (starts with <code>sk-</code>) and your DeepSeek account has credits.
+</details>
+
+<details>
+<summary><b>"Network error" when searching?</b></summary>
+Check your internet connection. Some corporate/school networks may block the DeepSeek domain.
+</details>
+
+## Usage
+
+1. Click the Word icon on the toolbar
+2. Pick a Skill from the dropdown (default: "Detailed")
+3. Type an English word, press **Enter**
+4. Click 🔊 to hear pronunciation
+5. Use the history panel at the bottom to revisit past lookups
+
+## Built-in Skills
+
+| ID | Name | Output |
+|----|------|--------|
+| `detailed` | Detailed | Phonetics · definition · category · tech summary · examples (with sources) · synonyms · collocations |
+| `quick` | Quick | Phonetics · Chinese definition |
+
+The **Detailed** skill classifies each word as `general`, `tech`, or `academic`. For IT, AI, and CS terms it generates an 80–150 word Wikipedia-style technical summary. All examples cite their real-world source.
+
+## Custom Skills
+
+Open the options page (⚙️) to create, edit, or delete custom Skills. Each Skill consists of a system prompt template (use `{word}` as the placeholder) and a list of output field definitions.
+
+> The system prompt must contain the word "json" (case-insensitive). The extension appends it automatically if missing, but including it in your prompt avoids API rejections.
+
+## Project Structure
 
 ```
-├── manifest.json          # Chrome MV3 清单
-├── popup/                 # 弹窗 (HTML/JS/CSS)
-├── options/               # 选项页 (API Key + Skill CRUD)
+├── manifest.json          # Chrome MV3 manifest
+├── popup/                 # Popup interface
+├── options/               # Options page (API Key + Skill CRUD)
 ├── lib/
-│   ├── deepseek.js        # DeepSeek API 客户端
-│   ├── storage.js         # chrome.storage.local 封装
-│   ├── skills.js          # Skill 合并 & 校验
+│   ├── deepseek.js        # DeepSeek API client
+│   ├── storage.js         # chrome.storage.local wrapper
+│   ├── skills.js          # Skill merging & validation
 │   └── tts.js             # Web Speech API (TTS)
-├── skills/presets.js      # 2 个内置 Skill
-└── icons/                 # 扩展图标 (16/48/128)
+├── skills/presets.js      # Built-in Skills (2)
+└── icons/                 # Extension icons
 ```
 
-## 技术栈
+## Tech
 
-- Chrome Extension Manifest V3，ES Module，零构建工具
-- `deepseek-chat` 模型，`response_format: json_object`，temperature 0.3
-- `chrome.storage.local` 持久化 API Key、自定义 Skill、查询历史（FIFO 上限 20 条）
-- Web Speech API (`SpeechSynthesisUtterance`)，语速 0.9x
+- Chrome Extension Manifest V3, ES Modules, zero build step
+- `deepseek-chat` model, `response_format: json_object`, temperature 0.3
+- `chrome.storage.local` for API key, custom skills, lookup history (FIFO max 20)
+- Web Speech API (`SpeechSynthesisUtterance`), playback rate 0.9x
 
 ## License
 
