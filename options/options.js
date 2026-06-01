@@ -73,8 +73,8 @@ async function testConnection() {
   showStatus('正在测试连接...', 'info');
 
   try {
-    // 使用最简单的 prompt 测试连通性
-    await queryWord('hello', '回复 {"test": "ok"}', key);
+    // 使用简单 JSON prompt 测试连通性（DeepSeek 要求 prompt 包含 "json" 字样）
+    await queryWord('hello', '请用 JSON 格式返回: {"test": "ok"}', key);
     showStatus('连接成功！API Key 有效', 'success');
   } catch (err) {
     showStatus(`连接失败: ${err.message}`, 'error');
