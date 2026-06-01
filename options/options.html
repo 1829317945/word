@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>单词查询 — 选项设置</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="page-title">⚙️ 选项设置</h1>
+
+    <!-- API Key 配置 -->
+    <section class="section">
+      <h2 class="section-title">🔑 DeepSeek API Key</h2>
+      <p class="section-desc">输入你的 DeepSeek API Key，用于调用 AI 模型查询单词。</p>
+      <div class="api-key-row">
+        <input
+          type="password"
+          id="apiKeyInput"
+          class="api-key-input"
+          placeholder="sk-xxxxxxxxxxxxxxxx"
+          autocomplete="off"
+        />
+        <button id="toggleVisibilityBtn" class="btn-outline" title="显示/隐藏">
+          <span id="visibilityIcon">👁️</span>
+        </button>
+      </div>
+      <div class="api-actions">
+        <button id="saveKeyBtn" class="btn-primary">保存</button>
+        <button id="testKeyBtn" class="btn-outline">测试连接</button>
+      </div>
+      <p id="apiStatus" class="status-text hidden"></p>
+    </section>
+
+    <!-- 自定义 Skill 管理 -->
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">🎨 自定义 Skill</h2>
+          <p class="section-desc">创建你自己的查询模板，满足不同场景需求。</p>
+        </div>
+        <button id="addSkillBtn" class="btn-primary">+ 新增 Skill</button>
+      </div>
+
+      <!-- Skill 列表 -->
+      <div id="skillList" class="skill-list">
+        <p class="empty-hint">暂无自定义 Skill，点击上方按钮创建。</p>
+      </div>
+
+      <!-- Skill 编辑表单 -->
+      <div id="skillForm" class="skill-form hidden">
+        <h3 id="formTitle" class="form-title">新增 Skill</h3>
+
+        <div class="form-group">
+          <label for="skillId">Skill ID <span class="required">*</span></label>
+          <input type="text" id="skillId" class="form-input" placeholder="例如: my-skill" />
+          <span class="form-hint">唯一标识符，只能包含小写字母、数字和连字符</span>
+        </div>
+
+        <div class="form-group">
+          <label for="skillName">名称 <span class="required">*</span></label>
+          <input type="text" id="skillName" class="form-input" placeholder="例如: 我的查询" />
+        </div>
+
+        <div class="form-group">
+          <label for="skillDesc">描述</label>
+          <input type="text" id="skillDesc" class="form-input" placeholder="简短描述这个 Skill 的用途" />
+        </div>
+
+        <div class="form-group">
+          <label for="skillIcon">图标 (Emoji)</label>
+          <input type="text" id="skillIcon" class="form-input" placeholder="例如: 📖" maxlength="2" />
+        </div>
+
+        <div class="form-group">
+          <label for="skillPrompt">System Prompt <span class="required">*</span></label>
+          <textarea id="skillPrompt" class="form-textarea" rows="6" placeholder="定义 AI 的行为和输出格式。使用 {word} 作为单词占位符。&#10;&#10;示例:&#10;你是一个英语词典。请返回以下单词的 JSON 信息..."></textarea>
+          <span class="form-hint">使用 <code>{word}</code> 作为查询单词的占位符</span>
+        </div>
+
+        <div class="form-group">
+          <label>输出字段 <span class="required">*</span></label>
+          <div id="outputFieldsContainer" class="output-fields">
+            <!-- 动态生成 -->
+          </div>
+          <button id="addFieldBtn" class="btn-outline btn-sm">+ 添加字段</button>
+          <span class="form-hint">key 对应 AI 返回的 JSON 字段名，label 为中文显示标题</span>
+        </div>
+
+        <div class="form-actions">
+          <button id="saveSkillBtn" class="btn-primary">保存 Skill</button>
+          <button id="cancelSkillBtn" class="btn-outline">取消</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 关于 -->
+    <section class="section about-section">
+      <h2 class="section-title">ℹ️ 关于</h2>
+      <p class="about-text">
+        Word 单词查询插件 v1.0.0<br>
+        基于 DeepSeek Chat API 的智能英语词典。<br>
+        内置详细查询、快速查询、考试模式三种预设 Skill，支持自定义查询模板。
+      </p>
+    </section>
+  </div>
+
+  <script src="../lib/storage.js" type="module"></script>
+  <script src="../lib/skills.js" type="module"></script>
+  <script src="../lib/deepseek.js" type="module"></script>
+  <script src="options.js" type="module"></script>
+</body>
+</html>

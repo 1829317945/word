@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>单词查询</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <!-- 标题栏 -->
+  <header class="header">
+    <h1 class="header-title">🔤 单词查询</h1>
+    <button id="settingsBtn" class="btn-icon" title="设置">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- Skill 选择器 -->
+  <div class="skill-selector">
+    <label for="skillSelect" class="skill-label">Skill:</label>
+    <select id="skillSelect" class="skill-select">
+      <option value="">加载中...</option>
+    </select>
+  </div>
+
+  <!-- 输入区域 -->
+  <div class="input-area">
+    <input
+      type="text"
+      id="wordInput"
+      class="word-input"
+      placeholder="输入英文单词，按 Enter 查询"
+      autofocus
+      autocomplete="off"
+    />
+    <button id="searchBtn" class="btn-search" title="查询" disabled>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- 加载状态 -->
+  <div id="loadingArea" class="loading-area hidden">
+    <div class="spinner"></div>
+    <span class="loading-text">查询中...</span>
+  </div>
+
+  <!-- 错误提示 -->
+  <div id="errorArea" class="error-area hidden">
+    <p id="errorMessage" class="error-message"></p>
+    <button id="retryBtn" class="btn-retry hidden">重试</button>
+  </div>
+
+  <!-- 查询结果 -->
+  <div id="resultArea" class="result-area hidden">
+    <div class="result-header">
+      <h2 id="resultWord" class="result-word"></h2>
+      <button id="speakBtn" class="btn-speak" title="朗读发音">🔊</button>
+    </div>
+    <div id="resultFields" class="result-fields"></div>
+  </div>
+
+  <!-- 查询历史 -->
+  <div id="historyArea" class="history-area">
+    <button id="historyToggle" class="history-toggle">
+      <span>📋 查询历史</span>
+      <span id="historyArrow" class="history-arrow">▼</span>
+    </button>
+    <div id="historyList" class="history-list">
+      <p class="history-empty">暂无查询记录</p>
+    </div>
+  </div>
+
+  <script src="../lib/storage.js" type="module"></script>
+  <script src="../lib/skills.js" type="module"></script>
+  <script src="../lib/deepseek.js" type="module"></script>
+  <script src="../lib/tts.js" type="module"></script>
+  <script src="popup.js" type="module"></script>
+</body>
+</html>
