@@ -145,17 +145,30 @@ function showResult(word, data) {
 
     // 根据字段类型特殊渲染
     if (Array.isArray(value)) {
-      // 数组 -> 每个元素一行
       valueDiv.innerHTML = value
-        .map((item) => {
-          if (typeof item === 'object') {
-            // [{en: "...", zh: "..."}] 格式
+        .map((item, idx) => {
+          if (typeof item === 'object' && field.key === 'examples') {
+            // 例句: {en, zh, source} -> 带来源标记
+            const en = item.en || item.english || '';
+            const zh = item.zh || item.chinese || '';
+            const src = item.source || '';
+            const num = idx + 1;
+            return `<div style="margin-bottom:6px;">
+              <div style="color:#333;line-height:1.6;">${num}. ${escapeHtml(en)}</div>
+              <div style="color:#888;font-size:12px;margin:2px 0;">${escapeHtml(zh)}</div>
+              ${src ? `<span style="font-size:10px;color:#999;background:#f0f2f5;padding:1px 6px;border-radius:3px;">📰 ${escapeHtml(src)}</span>` : ''}
+            </div>`;
+          } else if (typeof item === 'object' && (field.key === 'collocations')) {
+            // 搭配: {en, zh} -> 成对显示
+            return `<div style="margin-bottom:3px;">🔗 <b>${escapeHtml(item.en || item.english || '')}</b> — ${escapeHtml(item.zh || item.chinese || '')}</div>`;
+          } else if (typeof item === 'object') {
+            // 其他对象: {en, zh} 通用格式
             return `<div style="margin-bottom:4px;">${escapeHtml(item.en || item.english || '')}<br><span style="color:#888;font-style:normal;">${escapeHtml(item.zh || item.chinese || '')}</span></div>`;
           }
-          return `<div style="margin-bottom:4px;">${escapeHtml(String(item))}</div>`;
+          return `<div style="margin-bottom:4px;">${idx + 1}. ${escapeHtml(String(item))}</div>`;
         })
         .join('');
-      if (field.key === 'examples' || field.key === 'exam_examples') {
+      if (field.key === 'examples') {
         valueDiv.classList.add('examples');
       }
     } else if (typeof value === 'object') {

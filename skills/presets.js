@@ -18,9 +18,9 @@ export const BUILTIN_SKILLS = [
 - definition: 中文释义，包含词性和详细解释
 - category: 词条类型，"general"（普通词汇）、"tech"（科技词汇）或 "academic"（学术术语）
 - tech_summary: 如果属于科技/IT/AI/专业术语，请基于维基百科风格给出简明的中文技术总结（80-150字），涵盖背景定义、核心概念、实际应用场景和相关技术。如果是普通词汇，此字段返回空字符串 ""。
-- examples: 2-3 个英文例句，附带中文翻译。例句必须取材自真实场景，如新闻报道（The New York Times, BBC, The Guardian等）、电影/电视剧台词、TED演讲、名人演讲或学术文献。每个例句需标注来源（格式: "来源：The New York Times"）。
-- synonyms: 3-5 个近义词或相关术语，用逗号分隔
-- collocations: 2-3 个常见搭配，附带中文翻译`,
+- examples: JSON 数组，每个元素为 {"en": "英文例句", "zh": "中文翻译", "source": "来源"}。例句必须取材自真实场景（新闻、电影台词、TED演讲等），source 字段标注具体来源名称。例如: {"en": "The algorithm outperformed all benchmarks.", "zh": "该算法在所有基准测试中表现优异。", "source": "MIT Technology Review"}
+- synonyms: 3-5 个近义词或相关术语，用逗号分隔的字符串
+- collocations: JSON 数组，每个元素为 {"en": "英文搭配短语", "zh": "中文翻译"}。例如: {"en": "cutting-edge technology", "zh": "尖端技术"}`,
     outputFields: [
       { key: 'phonetic', label: '音标' },
       { key: 'definition', label: '释义' },

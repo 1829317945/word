@@ -5,21 +5,18 @@
 ## ✨ 功能特性
 
 - **🤖 AI 驱动** — 基于 DeepSeek Chat API，返回结构化、高质量的单词释义
-- **🎨 Skill 模板系统** — 3 种内置模式（详细查询 / 快速查询 / 考试备考）+ 无限自定义模板
+- **🎨 Skill 模板系统** — 内置详细/快速两种模式 + 无限自定义模板
 - **🔊 发音朗读** — 使用浏览器原生 Web Speech API，一键朗读单词
-- **📋 查询历史** — 自动保存最近 20 条查询，支持回看
+- **📋 查询历史** — 自动保存最近 20 条查询，支持离线回看
+- **🔬 科技百科** — 自动识别 IT/AI/科技词汇，提供维基百科风格技术总结
 - **⚡ 轻量无依赖** — 纯 JavaScript (ES Module)，零构建工具，零第三方依赖
-- **🎯 响应式弹窗** — 400px 宽度，自适应高度，简洁美观
 
 ## 📸 效果展示
 
-### 弹窗查询
-
-![弹窗查询](images/screenshot-popup.png)
-
-### 选项设置
-
-![选项设置](images/screenshot-options.png)
+<p align="center">
+  <img src="images/screenshot-popup.png" alt="弹窗查询" width="400" />
+  <img src="images/screenshot-options.png" alt="选项设置" width="400" />
+</p>
 
 ## 🚀 快速开始
 
@@ -64,9 +61,15 @@ cd word
 
 | Skill | 图标 | 说明 | 输出内容 |
 |-------|------|------|----------|
-| `detailed` | 📚 | 详细查询 | 音标 + 释义 + 例句 + 近义词 + 搭配 + 词源 |
+| `detailed` | 📚 | 详细查询 | 音标 + 释义 + 科技百科 + 真实例句（含来源） + 近义词 + 搭配 |
 | `quick` | ⚡ | 快速查询 | 音标 + 中文释义 |
-| `exam` | 📝 | 考试模式 | 音标 + 释义 + 近义词辨析 + 真题风格例句 |
+
+### 科技词汇增强
+
+详细模式会自动识别单词类型：
+- **普通词汇** → 标准词典释义
+- **科技词汇**（IT/AI/CS 等）→ 额外输出维基百科风格技术总结
+- **例句真实来源** → 标注出处（The New York Times、BBC、TED 等）
 
 ### 自定义 Skill
 
@@ -95,7 +98,7 @@ word/
 │   ├── storage.js               # chrome.storage 读写封装
 │   └── tts.js                   # Web Speech API 封装
 ├── skills/
-│   └── presets.js               # 内置预设 Skill (3个)
+│   └── presets.js               # 内置预设 Skill (2个)
 ├── images/
 │   ├── screenshot-popup.png     # 弹窗截图
 │   └── screenshot-options.png   # 选项页截图
